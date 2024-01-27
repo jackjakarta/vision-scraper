@@ -2,9 +2,9 @@ import os
 import json
 import argparse
 
-from utils.encoder import image_to_base64
 from utils.scraper import scrape
 from utils.vision import ImageInterpret
+from utils.utils import image_to_base64, load_json
 
 
 def main():
@@ -19,8 +19,7 @@ def main():
 
     images_path = "images/"
     file_list = os.listdir(images_path)
-
-    response_list = []
+    response_list = load_json("classifications.json")
 
     for filename in file_list:
         if os.path.isfile(os.path.join(images_path, filename)) and (
