@@ -22,6 +22,9 @@ source env/bin/activate
 pip3 install -r requirements.txt
 ```
 
+4. Setup `.env` file using the template at `.env.default`.
+
+
 4. Run `main.py` with your url to scrape and classify images from a website:
 ```commandline
 python3 main.py --url https://your-url-here.com
