@@ -34,3 +34,18 @@ python3 main.py --url https://your-url-here.com
 ```commandline
 python3 main.py --video "path/to/your/video.mp4"
 ```
+
+6. You can use Docker to run the script as well. Build an image with the provided `Dockerfile`:
+```commandline
+docker build -t vision-image .
+```
+and run this command for image classify:
+```commandline
+docker run -v /path/to/repository:/app vision-image python main.py --url https://your-url.com/
+```
+
+or this command for video analyse:
+
+```commandline
+docker run -v /path/to/repository:/app vision-image python main.py --video '/app/video.mp4'
+```
