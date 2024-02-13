@@ -54,21 +54,24 @@ class VideoAnalyser:
                 "content": [
                     "These are frames from a video. Generate a compelling narration that I can use as a voice-over "
                     "along with the video. Please only give me the narration in plain text without any other "
-                    "instructions.",
-                    *map(lambda x: {"image": x, "resize": 768}, self.base64frames[0::50]),
+                    "instructions. Make sure that the text you generate fits and does not exceed the length of the "
+                    f"video when spoken at a slow pace. The video is {len(self.base64frames)} frames long playing "
+                    "at 30 fps. ",
+                    *map(lambda x: {"image": x, "resize": 768}, self.base64frames[0::90]),
                 ],
             },
         ]
+        print(f"\n**********PROMPT**********\n\n{prompt[0].get('content')[0]}\n")
 
         params = {
             "model": "gpt-4-vision-preview",
             "messages": prompt,
-            "max_tokens": 200,
+            "max_tokens": 500,
         }
 
         text_generation = self.client.chat.completions.create(**params)
         self.generated_text = text_generation.choices[0].message.content
-        print(f"\nNarration:\n\n{self.generated_text}")
+        print(f"\n**********NARRATION**********\n\n{self.generated_text}")
 
     def generate_speech(self):
         random_string = RandomGenerator(6).random_digits()
@@ -78,7 +81,7 @@ class VideoAnalyser:
 
         audio_response = self.client.audio.speech.create(
             model="tts-1",
-            voice="fable",
+            voice="onyx",
             input=str(self.generated_text),
         )
 
