@@ -7,7 +7,7 @@ from PIL import Image
 from decouple import config
 from openai import OpenAI
 
-from utils.utils import RandomGenerator
+from utils import RandomGenerator
 
 OPENAI_API_KEY = config("OPENAI_API_KEY")
 
@@ -81,7 +81,7 @@ class VideoAnalyser:
 
         audio_response = self.client.audio.speech.create(
             model="tts-1",
-            voice="onyx",
+            voice="fable",
             input=str(self.generated_text),
         )
 

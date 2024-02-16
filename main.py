@@ -2,10 +2,10 @@ import argparse
 import json
 import os
 
+from utils import image_to_base64, load_json_list
 from utils.scraper import scrape
-from utils.utils import image_to_base64, load_json
-from utils.vision import ImageInterpret
 from utils.video import VideoAnalyser
+from utils.vision import ImageInterpret
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
 
         images_path = "images/"
         file_list = os.listdir(images_path)
-        response_list = load_json("classifications.json")
+        response_list = load_json_list("classifications.json")
 
         for filename in file_list:
             if os.path.isfile(os.path.join(images_path, filename)) and (
@@ -39,17 +39,19 @@ def main():
                 subject_start = response.find('Subject: ')
                 background_start = response.find('Background: ')
                 humans_start = response.find('Humans: ')
+                description_start = response.find('Description: ')
 
                 subject = response[subject_start + len('Subject: '):background_start].strip()
-                background = response[
-                             background_start + len('Background: '):humans_start].strip()
-                humans = response[humans_start + len('Humans: '):].strip()
+                background = response[background_start + len('Background: '):humans_start].strip()
+                humans = response[humans_start + len('Humans: '):description_start].strip()
+                description = response[description_start + len('Description: '):].strip()
 
                 dict_save = {
                     "file_name": filename,
                     "subject": subject,
                     "background": background,
                     "humans": humans,
+                    "description": description
                 }
 
                 response_list.append(dict_save)
