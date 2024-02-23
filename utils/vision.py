@@ -1,4 +1,5 @@
 from decouple import config
+from openai import BadRequestError
 from openai import OpenAI
 
 OPENAI_API_KEY = config("OPENAI_API_KEY")
@@ -32,7 +33,7 @@ class ImageInterpret:
         self.image_url = None
         self.image_file = None
 
-    def interpret_image_url(self, image_url: str, prompt: str = "What's in this image ?"):
+    def interpret_image_url(self, image_url: str, prompt: str = "Classify this image."):
         try:
             if isinstance(prompt, str):
                 self.prompt = prompt
@@ -63,7 +64,11 @@ class ImageInterpret:
             if self.prompt:
                 self.messages.append(msg_dict)
 
-            self.completion = self.client.chat.completions.create(model=self.model, messages=self.messages)
+            self.completion = self.client.chat.completions.create(
+                model=self.model,
+                messages=self.messages,
+                max_tokens=650
+            )
             self.messages.append({"role": "assistant", "content": str(self.completion.choices[0].message.content)})
 
             return self.completion.choices[0].message.content
@@ -91,7 +96,7 @@ class ImageInterpret:
                     },
                     {
                         "type": "image",
-                        "image": image_file,
+                        "image": self.image_file,
                     },
                 ],
             }
@@ -106,3 +111,6 @@ class ImageInterpret:
 
         except ValueError as e:
             return f"Value Error: {e}"
+
+        except BadRequestError as e:
+            return f"Bad Request Error: {e}"
