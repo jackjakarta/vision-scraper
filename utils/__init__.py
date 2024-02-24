@@ -1,7 +1,6 @@
 import base64
 import json
 import random
-import secrets
 import string
 import time
 from datetime import datetime, timezone, timedelta
@@ -100,53 +99,3 @@ class RandomGenerator:
         timestamp_formatted = f"{formatted_date}_{formatted_time}"
 
         return timestamp_formatted
-
-    def hex_token(self, bytes_nr: int = None, urlsafe: bool = False):
-        try:
-            if not isinstance(bytes_nr, int) and bytes_nr is not None:
-                raise ValueError("Bytes number must be an integer.")
-
-            if not isinstance(urlsafe, bool):
-                raise ValueError("URL Safe parameter must be True or False.")
-
-            if not urlsafe:
-                self.random_key = secrets.token_hex(bytes_nr)
-            else:
-                self.random_key = secrets.token_urlsafe(bytes_nr)
-
-            return self.random_key
-        except ValueError as e:
-            return f"Value error when running 'hex_token()' method: {e}"
-
-    def hex_token_to_json(self, file: str = "keys.json", bytes_nr: int = None, urlsafe: bool = False):
-        try:
-            if not isinstance(file, str):
-                raise ValueError("File path must be a string.")
-
-            if not isinstance(bytes_nr, int) and bytes_nr is not None:
-                raise ValueError("Bytes number must be an integer.")
-
-            if not isinstance(urlsafe, bool):
-                raise ValueError("URL Safe parameter must be True or False.")
-
-            if not urlsafe:
-                self.random_key = secrets.token_hex(bytes_nr)
-            else:
-                self.random_key = secrets.token_urlsafe(bytes_nr)
-
-            json_file = file
-            json_data = load_json_dict(json_file)
-
-            if not json_data:
-                id_key = 1
-            else:
-                id_key = max(int(key) for key in json_data.keys()) + 1
-
-            json_data[str(id_key)] = self.random_key
-
-            with open(json_file, "w") as keys_list:
-                json.dump(json_data, keys_list, indent=4)
-
-            return self.random_key
-        except ValueError as e:
-            return f"Value error when running 'hex_token_to_json()' method: {e}"
