@@ -52,10 +52,10 @@ class VideoAnalyser:
             {
                 "role": "user",
                 "content": [
-                    "These are frames from a video. Generate a compelling narration that I can use as a voice-over "
-                    "along with the video. Please only give me the narration in plain text without any other "
-                    "instructions. Make sure that the text you generate fits and does not exceed the length of the "
-                    f"video when spoken at a slow pace. The video is {len(self.base64frames)} frames long playing "
+                    "These are frames from a video. Generate a short but compelling narration that I can use as a "
+                    "voice-over along with the video. Please only give me the narration in plain text without any "
+                    "other instructions. Make sure that the text you generate fits and does not exceed the length of "
+                    f"the video when spoken at a slow pace. The video is {len(self.base64frames)} frames long playing "
                     "at 30 fps. ",
                     *map(lambda x: {"image": x, "resize": 768}, self.base64frames[0::90]),
                 ],
@@ -66,7 +66,7 @@ class VideoAnalyser:
         params = {
             "model": "gpt-4-vision-preview",
             "messages": prompt,
-            "max_tokens": 500,
+            "max_tokens": 400,
         }
 
         text_generation = self.client.chat.completions.create(**params)
@@ -80,8 +80,8 @@ class VideoAnalyser:
         audio_path = os.path.join(audio_folder, f"speech_{random_string}.wav")
 
         audio_response = self.client.audio.speech.create(
-            model="tts-1",
-            voice="fable",
+            model="tts-1-hd",
+            voice="onyx",
             input=str(self.generated_text),
         )
 
