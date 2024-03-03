@@ -56,7 +56,7 @@ class VideoAnalyser:
                     "voice-over along with the video. Please only give me the narration in plain text without any "
                     "other instructions. Make sure that the text you generate fits and does not exceed the length of "
                     f"the video when spoken at a slow pace. The video is {len(self.base64frames)} frames long playing "
-                    "at 30 fps. ",
+                    "at 30 fps.\n",
                     *map(lambda x: {"image": x, "resize": 768}, self.base64frames[0::90]),
                 ],
             },

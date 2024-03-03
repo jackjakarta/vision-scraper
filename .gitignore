@@ -165,3 +165,5 @@ videos/
 frames_images/
 audio/
 tools/
+qr_codes/
+my_script.py

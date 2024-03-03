@@ -2,6 +2,8 @@ from decouple import config
 from openai import BadRequestError
 from openai import OpenAI
 
+from utils import image_to_base64
+
 OPENAI_API_KEY = config("OPENAI_API_KEY")
 
 
@@ -84,6 +86,7 @@ class ImageInterpret:
 
             if isinstance(image_file, str):
                 self.image_file = image_file
+                base_file = image_to_base64(self.image_file)
             else:
                 raise ValueError("Image file must be a path (string)!")
 
@@ -96,7 +99,7 @@ class ImageInterpret:
                     },
                     {
                         "type": "image",
-                        "image": self.image_file,
+                        "image": base_file,
                     },
                 ],
             }

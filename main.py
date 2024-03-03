@@ -2,7 +2,7 @@ import argparse
 import json
 import os
 
-from utils import image_to_base64, load_json_list
+from utils import load_json_list
 from utils.scraper import scrape
 from utils.video import VideoAnalyser
 from utils.vision import ImageInterpret
@@ -29,11 +29,10 @@ def main():
                     filename.endswith(".jpeg")
             ):
                 img_path = os.path.join(images_path, filename)
-                base_file = image_to_base64(img_path)
 
                 # Call to OpenAI API
                 ai = ImageInterpret()
-                response = ai.interpret_image_file(base_file)
+                response = ai.interpret_image_file(img_path)
 
                 # String strip
                 subject_start = response.find('Subject: ')
