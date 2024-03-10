@@ -32,6 +32,7 @@ class VideoAnalyser:
         print(len(self.base64frames), "frames read.")
 
     def save_frames(self):
+        print("\nSaving frames and generating prompt...")
         output_dir = "frames_images"
         os.makedirs(output_dir, exist_ok=True)
 
@@ -61,7 +62,7 @@ class VideoAnalyser:
                 ],
             },
         ]
-        print(f"\n**********PROMPT**********\n\n{prompt[0].get('content')[0]}\n")
+        print(f"\n**********PROMPT**********\n{prompt[0].get('content')[0]}\n")
 
         params = {
             "model": "gpt-4-vision-preview",
@@ -71,7 +72,7 @@ class VideoAnalyser:
 
         text_generation = self.client.chat.completions.create(**params)
         self.generated_text = text_generation.choices[0].message.content
-        print(f"\n**********NARRATION**********\n\n{self.generated_text}")
+        print(f"\n**********NARRATION**********\n{self.generated_text}")
 
     def generate_speech(self):
         random_string = RandomGenerator(6).random_digits()
@@ -86,4 +87,5 @@ class VideoAnalyser:
         )
 
         audio_response.stream_to_file(audio_path)
-        print(f"\nAudio saved at {audio_path}.")
+        print("\n\n**********SPEECH GENERATION**********\n")
+        print(f"Audio saved at {audio_path}.\n")
