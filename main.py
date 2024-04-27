@@ -43,28 +43,9 @@ def main() -> None:
 
                 # Call to OpenAI API
                 ai = ImageInterpret()
-                response = ai.interpret_image_file(img_path)
+                response = ai.classify_image(img_path)
 
-                # String strip
-                subject_start = response.find('Subject: ')
-                background_start = response.find('Background: ')
-                humans_start = response.find('Humans: ')
-                description_start = response.find('Description: ')
-
-                subject = response[subject_start + len('Subject: '):background_start].strip()
-                background = response[background_start + len('Background: '):humans_start].strip()
-                humans = response[humans_start + len('Humans: '):description_start].strip()
-                description = response[description_start + len('Description: '):].strip()
-
-                dict_save = {
-                    "file_name": filename,
-                    "subject": subject,
-                    "background": background,
-                    "humans": humans,
-                    "description": description
-                }
-
-                response_list.append(dict_save)
+                response_list.append(response)
 
         with open("classifications.json", "w") as json_file:
             json.dump(response_list, json_file, indent=4)
