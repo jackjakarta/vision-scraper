@@ -5,8 +5,6 @@ import string
 import time
 from datetime import datetime, timezone, timedelta
 
-import qrcode
-
 
 def image_to_base64(img_path: str):
     try:
@@ -48,29 +46,6 @@ def load_json_dict(filename: str):
         with open(filename, 'w') as file:
             json.dump({}, file)
         return {}
-
-
-def generate_qr_code(text_input: str):
-    try:
-        if not isinstance(text_input, str):
-            raise ValueError("Input must be string.")
-
-        # Generate QR code
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
-        qr.add_data(text_input)
-        qr.make(fit=True)
-
-        image_name = RandomGenerator(8).random_digits()
-        qr_image = qr.make_image(fill_color="black", back_color="white")
-        qr_image.save(f"qr_code_{image_name}.png")
-
-    except ValueError as e:
-        print(f"Value Error: {e}")
 
 
 class RandomGenerator:
