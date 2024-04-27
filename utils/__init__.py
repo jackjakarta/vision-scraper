@@ -46,7 +46,12 @@ def load_json_dict(filename: str):
         with open(filename, 'w') as file:
             json.dump({}, file)
         return {}
+    
 
+def save_json(data: list[dict], filename: str) -> None:
+    with open(filename, "w") as json_file:
+        json.dump(data, json_file, indent=4)
+        
 
 class RandomGenerator:
     """Random String Generator. Default length is 10 characters."""

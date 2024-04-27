@@ -1,8 +1,9 @@
-import json
 import os
 from argparse import ArgumentParser, Namespace
 
-from utils import load_json_list
+from decouple import config
+
+from utils import load_json_list, save_json
 from utils.scraper import scrape
 from utils.video import VideoAnalyser
 from utils.vision import ImageInterpret
@@ -28,9 +29,10 @@ def main() -> None:
         scrape(args.url)
         print("\nVision is analysing the images...")
 
-        images_path = "images/"
+        images_path = config("IMAGES_FOLDER", default="images")
+        classifications_file = config("CLASSIFICATIONS_FILE", default="classifications.json")
         file_list = os.listdir(images_path)
-        response_list = load_json_list("classifications.json")
+        response_list = load_json_list(classifications_file)
 
         for filename in file_list:
             if os.path.isfile(os.path.join(images_path, filename)) and (
@@ -47,9 +49,9 @@ def main() -> None:
 
                 response_list.append(response)
 
-        with open("classifications.json", "w") as json_file:
-            json.dump(response_list, json_file, indent=4)
-            print("\nImage classification successfully saved to JSON!")
+        # Save JSON file
+        save_json(response_list, classifications_file)
+        print("\nImage classification successfully saved to JSON!")
 
     if args.video:
         video = VideoAnalyser(args.video)

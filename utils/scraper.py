@@ -3,6 +3,7 @@ from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
+from decouple import config
 
 
 def scrape(website_url):
@@ -13,7 +14,8 @@ def scrape(website_url):
         soup = BeautifulSoup(response.text, 'html.parser')
         img_tags = soup.find_all('img')
 
-        os.makedirs('images', exist_ok=True)
+        images_path = config("IMAGES_FOLDER", default="images")
+        os.makedirs(images_path, exist_ok=True)
 
         for img_tag in img_tags:
             # Get img URL

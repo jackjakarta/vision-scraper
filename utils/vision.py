@@ -27,7 +27,7 @@ description: 5-8 words description of the whole image
 
 
 class ImageInterpret:
-    def __init__(self, model="gpt-4-turbo", system_message: str = prmpt_vision):
+    def __init__(self, model="gpt-4-turbo", system_message: str = prmpt_vision) -> None:
         self.client = OpenAI(api_key=OPENAI_API_KEY)
         self.model = model
         self.system_message = system_message
@@ -41,7 +41,7 @@ class ImageInterpret:
         self.completion = None
         self.image_file = None
     
-    def classify_image(self, image_file: str, prompt: str = "Classify this image."):
+    def classify_image(self, image_file: str, prompt: str = "Classify this image.") -> dict:
         self.prompt = prompt
         self.image_file = image_file
 
