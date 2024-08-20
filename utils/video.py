@@ -10,6 +10,7 @@ from openai import OpenAI
 from utils import RandomGenerator
 
 OPENAI_API_KEY = config("OPENAI_API_KEY")
+OPENAI_MODEL = config("OPENAI_MODEL")
 
 
 class VideoAnalyser:
@@ -65,7 +66,7 @@ class VideoAnalyser:
         print(f"\n**********PROMPT**********\n{prompt[0].get('content')[0]}\n")
 
         params = {
-            "model": "gpt-4-vision-preview",
+            "model": OPENAI_MODEL,
             "messages": prompt,
             "max_tokens": 400,
         }
