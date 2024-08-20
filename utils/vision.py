@@ -6,6 +6,7 @@ from openai import OpenAI, BadRequestError
 from utils import image_to_base64
 
 OPENAI_API_KEY = config("OPENAI_API_KEY")
+OPENAI_MODEL = config("OPENAI_MODEL", default="gpt-4o")
 
 prmpt_vision = """
 Role and Goal: 
@@ -27,7 +28,7 @@ description: 5-8 words description of the whole image
 
 
 class ImageInterpret:
-    def __init__(self, model="gpt-4-turbo", system_message: str = prmpt_vision) -> None:
+    def __init__(self, model=OPENAI_MODEL, system_message: str = prmpt_vision) -> None:
         self.client = OpenAI(api_key=OPENAI_API_KEY)
         self.model = model
         self.system_message = system_message
