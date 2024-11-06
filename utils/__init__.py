@@ -3,7 +3,7 @@ import json
 import random
 import string
 import time
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 def image_to_base64(img_path: str):
@@ -21,14 +21,14 @@ def image_to_base64(img_path: str):
 def load_json_list(filename: str):
     try:
         if isinstance(filename, str):
-            with open(filename, 'r') as file:
+            with open(filename, "r") as file:
                 return json.load(file)
         else:
             raise ValueError("JSON file path must be a string!")
     except ValueError as e:
         print(f"Error: {e}")
     except FileNotFoundError:
-        with open(filename, 'w') as file:
+        with open(filename, "w") as file:
             json.dump([], file)
         return []
 
@@ -36,25 +36,26 @@ def load_json_list(filename: str):
 def load_json_dict(filename: str):
     try:
         if isinstance(filename, str):
-            with open(filename, 'r') as file:
+            with open(filename, "r") as file:
                 return json.load(file)
         else:
             raise ValueError("JSON file path must be a string!")
     except ValueError as e:
         print(f"Error: {e}")
     except FileNotFoundError:
-        with open(filename, 'w') as file:
+        with open(filename, "w") as file:
             json.dump({}, file)
         return {}
-    
+
 
 def save_json(data: list[dict], filename: str) -> None:
     with open(filename, "w") as json_file:
         json.dump(data, json_file, indent=4)
-        
+
 
 class RandomGenerator:
     """Random String Generator. Default length is 10 characters."""
+
     def __init__(self, length: int = 10):
         try:
             if isinstance(length, int):
@@ -98,8 +99,8 @@ class RandomGenerator:
         timestamp = time.time()
         time_zone = timezone(timedelta(hours=time_zone_delta))
         datetime_obj = datetime.fromtimestamp(timestamp, tz=time_zone)
-        formatted_date = datetime_obj.strftime('%d-%m-%Y')
-        formatted_time = datetime_obj.strftime('%H-%M-%S')
+        formatted_date = datetime_obj.strftime("%d-%m-%Y")
+        formatted_time = datetime_obj.strftime("%H-%M-%S")
 
         timestamp_formatted = f"{formatted_date}_{formatted_time}"
 

@@ -27,29 +27,32 @@ def main() -> None:
 
     if args.url:
         scrape(args.url)
-        print("\nVision is analysing the images...")
+        print("\nVision is analyzing the images...")
 
         images_path = config("IMAGES_FOLDER", default="images")
-        classifications_file = config("CLASSIFICATIONS_FILE", default="classifications.json")
-        file_list = os.listdir(images_path)
+        classifications_file = config(
+            "CLASSIFICATIONS_FILE", default="classifications.json"
+        )
         response_list = load_json_list(classifications_file)
+        file_list = os.listdir(images_path)
 
         for filename in file_list:
             if os.path.isfile(os.path.join(images_path, filename)) and (
-                    filename.endswith(".jpg") or
-                    filename.endswith(".png") or
-                    filename.endswith(".jpeg") or
-                    filename.endswith(".webp")
+                filename.endswith(".jpg")
+                or filename.endswith(".png")
+                or filename.endswith(".jpeg")
+                or filename.endswith(".webp")
             ):
                 img_path = os.path.join(images_path, filename)
 
-                # Call to OpenAI API
                 ai = ImageInterpret()
                 response = ai.classify_image(img_path)
 
-                response_list.append(response)
+                if isinstance(response, dict):
+                    response_list.append(response)
+                else:
+                    print(f"Error processing {filename}: {response}")
 
-        # Save JSON file
         save_json(response_list, classifications_file)
         print("\nImage classification successfully saved to JSON!")
 

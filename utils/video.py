@@ -3,9 +3,9 @@ import io
 import os
 
 import cv2
-from PIL import Image
 from decouple import config
 from openai import OpenAI
+from PIL import Image
 
 from utils import RandomGenerator
 
@@ -46,7 +46,9 @@ class VideoAnalyser:
 
             # Save the image to the output directory
             random_key = RandomGenerator(6)
-            image_path = os.path.join(output_dir, f"frame_{i:04d}_{random_key.random_string()}.jpg")
+            image_path = os.path.join(
+                output_dir, f"frame_{i:04d}_{random_key.random_string()}.jpg"
+            )
             pil_image.save(image_path)
 
     def generate_voice_text(self):
@@ -59,7 +61,9 @@ class VideoAnalyser:
                     "other instructions. Make sure that the text you generate fits and does not exceed the length of "
                     f"the video when spoken at a slow pace. The video is {len(self.base64frames)} frames long playing "
                     "at 30 fps.\n",
-                    *map(lambda x: {"image": x, "resize": 768}, self.base64frames[0::90]),
+                    *map(
+                        lambda x: {"image": x, "resize": 768}, self.base64frames[0::90]
+                    ),
                 ],
             },
         ]
